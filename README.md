@@ -7,6 +7,7 @@ Please use the Code Compose Studio to import the template project:
 3. Select Code Compose Studio, then select CCS projects. Go to NEXT.  
 4. Click Browse and select the ccs folder from this repository. Then Click Finish.  
 5.  Click Project > Build All,  follow by Run > Debug 
+6.  Once Debug finish, remember to click Resume (to run the program)
 
 Next, launch the script in your git clone folder using this command:
 *python3 audio_frame_serial_print.py COM3 32 NONE -b 115200*
