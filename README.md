@@ -29,6 +29,10 @@ If everything went fine, you should be able to see the data coming in:
 
 ![transmiting](images/with_data.png)
 
+
+## Getting the .wav files 
+Currently, upon collecting 1000 samples (no specific reason, trial and error). The script will create a folder called *samples*. Inside this folder you will find all the .wav files.
+
 ## Updates 
 21 Oct : the UART is printing in HEX values of sensor mic values. 
 Try not to mess with the *mic_test.c* unless necessary. Otherwise, any issues can contact me directly. 
