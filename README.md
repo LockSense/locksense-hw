@@ -12,6 +12,7 @@ Next, launch the script in your git clone folder using this command:
 *python3 audio_frame_serial_print.py COM3 32 NONE -b 115200*
 
 You should now see the following image:
+
 ![waiting_data](images/waiting_data.jpg)
 
 Also, the sensor board led should now be RED. 
@@ -22,7 +23,11 @@ To transmit, press the left button of of the board. (just try either of the butt
 
 **Board LED -> Flashing green: Recording in progress (Press left button)** 
 
-Note: Before launching this step, ensure your CCS is in debug mode, and your script is already running. 
+Note: Before launching this step, ensure your CCS is in debug mode, and your script is already running.
+
+If everything went fine, you should be able to see the data coming in:
+
+![transmiting](images/with_data.png)
 
 ## Updates 
 21 Oct : the UART is printing in HEX values of sensor mic values. 
