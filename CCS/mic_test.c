@@ -31,7 +31,7 @@
  */
 
 /*
- *  ======== mic_test.c ========
+ *  ======== pdmstream.c ========
  */
 
 /* XDCtools Header files */
@@ -50,8 +50,8 @@
 
 /* TI-RTOS Header files */
 #include <ti/drivers/PIN.h>
-#include <ti/mw/display/Display.h>
-
+//#include <ti/mw/display/Display.h>
+#include <ti/drivers/UART.h>
 /* PDM Driver */
 #include <ti/drivers/pdm/PDMCC26XX.h>
 
@@ -60,7 +60,7 @@
 
 #include <stdint.h>
 
-#define TASKSTACKSIZE      768
+#define TASKSTACKSIZE      768*5
 
 Task_Struct task0Struct;
 Char task0Stack[TASKSTACKSIZE];
@@ -126,7 +126,7 @@ static int sessionCount = 0;
 static void SA_PDMCC26XX_callbackFxn(PDMCC26XX_Handle handle,
         PDMCC26XX_StreamNotification *streamNotification);
 static PDMCC26XX_Handle pdmHandle = NULL;
-static void SA_processPDMData(Display_Handle display);
+static void SA_processPDMData(UART_Handle uart);
 static int SA_envelopeDetector(int16_t *pPCMsamples, uint16_t numOfSamples);
 static void *SA_audioMalloc(uint_least16_t size);
 static void SA_audioFree(void *msg, size_t size);
@@ -163,26 +163,40 @@ void buttonCallbackFxn(PIN_Handle handle, PIN_Id pinId);
  */
 Void taskFxn(UArg arg0, UArg arg1) {
     static int debounceCount = 0;
+    UART_Handle uart;
+    UART_Params uartParams;
 
-    Display_Handle    display;
-    Display_Params    displayParams;
+        /* Create a UART with data processing off. */
+           UART_Params_init(&uartParams);
+           uartParams.writeDataMode = UART_DATA_BINARY;
+           uartParams.readDataMode = UART_DATA_BINARY;
+           uartParams.readReturnMode = UART_RETURN_FULL;
+           uartParams.readEcho = UART_ECHO_OFF;
+           uartParams.baudRate = 115200;
+           uart = UART_open(Board_UART0, &uartParams);
 
-    Display_Params_init(&displayParams);
-    display = Display_open(Display_Type_LCD, &displayParams);
-    if (!display)
-    {
-        // Failed to open LCD display, check UART
-        display = Display_open(Display_Type_UART, &displayParams);
-    }
-    if (display)
-    {
-        Display_clear(display);
-        Display_print0(display, 1, 1, "PDM Stream");
-    }
-    else
-    {
-        return;
-    }
+       if (uart == NULL) {
+           System_abort("Error opening the UART");
+       }
+//    Display_Handle    display;
+//    Display_Params    displayParams;
+//
+//    Display_Params_init(&displayParams);
+//    display = Display_open(Display_Type_LCD, &displayParams);
+//    if (!display)
+//    {
+//        // Failed to open LCD display, check UART
+//        display = Display_open(Display_Type_UART, &displayParams);
+//    }
+//    if (display)
+//    {
+//        Display_clear(display);
+//        Display_print0(display, 1, 1, "PDM Stream");
+//    }
+//    else
+//    {
+//        return;
+//    }
 
     /* Loop forever */
     while (1) {
@@ -266,7 +280,7 @@ Void taskFxn(UArg arg0, UArg arg1) {
                 saAudioState = SA_AUDIO_STARTING;
                 currentFrameCount = 0;
                 sessionCount++;
-                Display_print1(display, 2, 1, "Session: %d", sessionCount);
+//                Display_print1(display, 2, 1, "Session: %d", sessionCount);
                 /* Stream immediately if we simply dump over UART. */
                 PDMCC26XX_startStream(pdmHandle);
                 PIN_setOutputValue(ledPinHandle, Board_LED1, 0);
@@ -297,7 +311,7 @@ Void taskFxn(UArg arg0, UArg arg1) {
          * PDM driver callback function.
          */
         if (events & SA_PCM_BLOCK_READY) {
-            SA_processPDMData(display);
+            SA_processPDMData(uart);
             /* Mark event as processed */
             events &= ~SA_PCM_BLOCK_READY;
         }
@@ -326,7 +340,7 @@ int main(void) {
 
     /* Call board init functions */
     Board_initGeneral();
-
+    Board_initUART();
     /* Construct BIOS objects */
     Task_Params_init(&taskParams);
     taskParams.priority = 1;
@@ -393,7 +407,7 @@ int main(void) {
  *
  */
 
-static void SA_processPDMData(Display_Handle display) {
+static void SA_processPDMData(UART_Handle uart) {
 #define MAX_VOLUME_IND        15
 #define TOTAL_COUNT_STR_MAX    15
 #define TOTAL_COUNT_BEG_IDX     7
@@ -409,21 +423,20 @@ static void SA_processPDMData(Display_Handle display) {
         // if we're not already sending
         while (PDMCC26XX_requestBuffer(pdmHandle, &bufferRequest)) {
             if (bufferRequest.status == PDMCC26XX_STREAM_BLOCK_READY) {
-                int current,newSample;
-                int16_t *pPCMsamples = (int16_t *)bufferRequest.buffer->pBuffer;
+                int current;
                 if (!pdmParams.applyCompression) {
-//                    current = SA_envelopeDetector((int16_t *)bufferRequest.buffer->pBuffer, AUDIO_BUF_UNCOMPRESSED_SIZE);
-//                    if (current > maxEnvSinceLastReport)
-//                    {
-//                        maxEnvSinceLastReport = current;
-//                    }
-                    Display_print1(display, 3, 1, "%x\n", pPCMsamples);
-
+                    current = SA_envelopeDetector((int16_t *)bufferRequest.buffer->pBuffer, AUDIO_BUF_UNCOMPRESSED_SIZE);
+                    if (current > maxEnvSinceLastReport)
+                    {
+                        maxEnvSinceLastReport = current;
+                    }
                 }
                 totalFrameCount++;
                 currentFrameCount++;
                 if ((bufferRequest.buffer->metaData.seqNum & 0x0000000F) == 0x00)
                 {
+                    int16_t *pPCMsamples = (int16_t *)bufferRequest.buffer->pBuffer;
+                    UART_write(uart, pPCMsamples,(AUDIO_BUF_UNCOMPRESSED_SIZE*2));
 //                    Display_print1(display, 3, 1, "Frames %d", currentFrameCount);
 //                    if (totalFrameCount < 1000)
 //                    {
