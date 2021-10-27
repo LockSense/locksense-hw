@@ -1780,7 +1780,7 @@ __FAR__ const xdc_SizeT ti_sysbios_knl_Task_Module_State_terminatedQ__O = offset
  *  Define absolute path prefix for this executable's
  *  configuration generated files.
  */
-xdc__META(__ASM__, "@(#)__ASM__ = C:/Users/steve/workspace_v10/mic_test_CC2650STK_TI/Debug/configPkg/package/cfg/pdmstream_pem3");
+xdc__META(__ASM__, "@(#)__ASM__ = C:/Users/steve/OneDrive/Desktop/test/locksense-hw/CCS/Debug/configPkg/package/cfg/pdmstream_pem3");
 
 /*
  *  ======== __ISA__ ========

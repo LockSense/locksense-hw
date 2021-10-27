@@ -11,7 +11,7 @@ var makeAssembly = false;
 var Executable = xdc.module('xdc.bld.Executable');
 
 var exeOpts = new Executable.Attrs({
-        cfgScript: 'C:/Users/steve/workspace_v10/mic_test_CC2650STK_TI/pdmstream.cfg',
+        cfgScript: 'C:/Users/steve/OneDrive/Desktop/test/locksense-hw/CCS/pdmstream.cfg',
         profile: 'release',
         cfgHome: 'configPkg',
 });
@@ -41,7 +41,7 @@ else {
 
 var thisObj = {
     cfg:        '../pdmstream.cfg',
-    outputPath: 'C:/Users/steve/workspace_v10/mic_test_CC2650STK_TI/Debug/configPkg',
+    outputPath: 'C:/Users/steve/OneDrive/Desktop/test/locksense-hw/CCS/Debug/configPkg',
     exeName:    'pdmstream' + suffix,
     exeIntName: 'pdmstream' + suffix.replace('.', '_'),
     targ:       targ,

@@ -1,7 +1,7 @@
 ******************************************************************************
                   TI ARM Linker PC v20.2.5                     
 ******************************************************************************
->> Linked Thu Oct 21 10:31:35 2021
+>> Linked Thu Oct 21 12:00:33 2021
 
 OUTPUT FILE NAME:   <mic_test_CC2650STK_TI.out>
 ENTRY POINT SYMBOL: "ResetISR"  address: 00005615
@@ -1198,8 +1198,8 @@ section   page    origin      length       input sections
 .vecs      0    20000000    000000c8     NOLOAD SECTION
                   20000000    000000c8     pdmstream_pem3.oem3 (.vecs)
 
-xdc.meta   0    00000000    000000f2     COPY SECTION
-                  00000000    000000f2     pdmstream_pem3.oem3 (xdc.meta)
+xdc.meta   0    00000000    000000f5     COPY SECTION
+                  00000000    000000f5     pdmstream_pem3.oem3 (xdc.meta)
 
 xdc.noload 
 *          0    00000000    00000000     COPY SECTION
@@ -1220,7 +1220,7 @@ MODULE SUMMARY
     +--+---------------------------------+-------+---------+---------+
        Total:                            1908    360       1784   
                                                                   
-    C:\Users\steve\workspace_v10\mic_test_CC2650STK_TI\Debug\configPkg\package\cfg\
+    C:\Users\steve\OneDrive\Desktop\test\locksense-hw\CCS\Debug\configPkg\package\cfg\
        pdmstream_pem3.oem3               728     1547      6026   
     +--+---------------------------------+-------+---------+---------+
        Total:                            728     1547      6026   
@@ -1278,7 +1278,7 @@ MODULE SUMMARY
     +--+---------------------------------+-------+---------+---------+
        Total:                            332     29        0      
                                                                   
-    C:\Users\steve\workspace_v10\mic_test_CC2650STK_TI\src\sysbios\rom_sysbios.aem3
+    C:\Users\steve\OneDrive\Desktop\test\locksense-hw\CCS\src\sysbios\rom_sysbios.aem3
        rom_sysbios.obj                   2991    0         0      
        rom_sysbios_config.obj            52      0         0      
     +--+---------------------------------+-------+---------+---------+
@@ -1835,11 +1835,11 @@ UNDEFED   SHT$$INIT_ARRAY$$Limit
 000067a5  UART_write                                                                
 00000000  __ASM__                                                                   
 20001d28  __CIOBUF_                                                                 
-0000006c  __ISA__                                                                   
-0000007e  __PLAT__                                                                  
+0000006f  __ISA__                                                                   
+00000081  __PLAT__                                                                  
 20005000  __STACK_END                                                               
 00000300  __STACK_SIZE                                                              
-000000a5  __TARG__                                                                  
+000000a8  __TARG__                                                                  
 000070b8  __TI_CINIT_Base                                                           
 00007118  __TI_CINIT_Limit                                                          
 00007070  __TI_Handler_Table_Base                                                   
@@ -1854,7 +1854,7 @@ ffffffff  __TI_prof_data_start
 00006e80  __TI_static_base__                                                        
 000058fd  __TI_writemsg                                                             
 00006755  __TI_zero_init                                                            
-000000ca  __TRDR__                                                                  
+000000cd  __TRDR__                                                                  
 0000498b  __aeabi_idiv0                                                             
 0000498b  __aeabi_ldiv0                                                             
 00006519  __aeabi_lmul                                                              
@@ -2521,10 +2521,10 @@ address   name
 00000000  ti_sysbios_family_arm_m3_Hwi_resetVectors                                 
 00000001  xdc_runtime_Startup__EXECFXN__C                                           
 00000001  xdc_runtime_Startup__RESETFXN__C                                          
-0000006c  __ISA__                                                                   
-0000007e  __PLAT__                                                                  
-000000a5  __TARG__                                                                  
-000000ca  __TRDR__                                                                  
+0000006f  __ISA__                                                                   
+00000081  __PLAT__                                                                  
+000000a8  __TARG__                                                                  
+000000cd  __TRDR__                                                                  
 00000100  ti_sysbios_knl_Task_Object__PARAMS__C                                     
 0000013c  ti_sysbios_knl_Mailbox_Object__PARAMS__C                                  
 00000170  ti_sysbios_family_arm_m3_Hwi_Object__PARAMS__C                            

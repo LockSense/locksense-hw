@@ -1,6 +1,6 @@
 #
 # This file was generated based on the configuration script:
-#     C:\Users\steve\workspace_v10\mic_test_CC2650STK_TI\pdmstream.cfg
+#     C:\Users\steve\OneDrive\Desktop\test\locksense-hw\CCS\pdmstream.cfg
 #
 # This makefile may be included in other makefiles that need to build
 # the libraries containing the compiled source files generated as
@@ -14,7 +14,7 @@
 #
 # The absolute path to the generated source directory (at the time the
 # sources were generated) is:
-#    C:\Users\steve\workspace_v10\mic_test_CC2650STK_TI\src
+#    C:\Users\steve\OneDrive\Desktop\test\locksense-hw\CCS\src
 #
 GEN_SRC_DIR ?= ../src
 
