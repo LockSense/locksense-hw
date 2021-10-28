@@ -16,25 +16,25 @@ def save_file(data):
  w.setnchannels(1)
  w.setframerate(16000)
  w.setsampwidth(2)
- w.writeframesraw(data)
+ w.writeframes(data)
  w.close()
  print("......done...")
 
 try:
  ser = None
- ser = Serial("COM3",115200,timeout=0.1)
+ ser = Serial("COM3",256000,timeout=0.1)
  pcmdata = bytearray()
   
  frame = 0
  while True:
-  indata = ser.read(32)
+  indata = ser.read(384)
   pcmdata+=bytearray(indata)
     
   #print(type(pcmdata))
   #pcmdata.append(arr) 
 
   #collect 1000 frames
-  if frame == 1000:
+  if frame == 200 :
    #pcmdata.reverse()
    save_file(pcmdata)
    frame=0
