@@ -12,18 +12,21 @@ def get_script_path():
 device_name = "COM3"
 
 baudrate = 256000
-bytes_per_read = 384
+bytes_per_read = 16000
+framerate = 16000
 num_seconds = 32
 
-bytes_per_second = baudrate / 8
-num_frames = int(bytes_per_second * num_seconds / bytes_per_read)
+# bits_per_symbol = 1 # Not sure about this
+# bytes_per_second = baudrate * bits_per_symbol / 8
+# num_frames = int(bytes_per_second * num_seconds / bytes_per_read)
+num_frames = int(framerate * num_seconds / bytes_per_read)
 
 def save_file(data):
  filename = time.strftime("pdm_test_%Y-%m-%d_%H-%M-%S_pcm")
  print("................saving file........")
  w = wave.open("./samples/" + filename + ".wav", "w")
  w.setnchannels(1)
- w.setframerate(16000)
+ w.setframerate(framerate)
  w.setsampwidth(2)
  w.writeframes(data)
  w.close()
@@ -31,7 +34,7 @@ def save_file(data):
 
 try:
  ser = None
- ser = Serial(device_name,baudrate,timeout=0.1)
+ ser = Serial(device_name,baudrate,timeout=None)
  pcmdata = bytearray()
   
  frame = 0
@@ -47,9 +50,8 @@ try:
    #pcmdata.reverse()
    save_file(pcmdata)
    break
-  elif frame % 10 == 0:
-   print(frame)
 
+  print(frame)
   frame+=1
 
      
