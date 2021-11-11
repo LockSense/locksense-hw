@@ -77,7 +77,7 @@ def save_wav():
     filename = time.strftime("pdm_test_%Y-%m-%d_%H-%M-%S_adpcm")
 
     print ("...................saving file")
-    w = wave.open(filename + ".wav", "w")
+    w = wave.open("samples/"+filename + ".wav", "w")
     w.setnchannels(1)
     w.setframerate(16000)
     w.setsampwidth(2)
@@ -122,7 +122,7 @@ class MyDelegate(btle.DefaultDelegate):
          else:
           decode_adpcm(data)
           noti_count+=1
-        if frame_count ==200:
+        if frame_count ==600: #600 frame count corresponds to ~0.06 second
          save_wav()
          frame_count=0
         # ... perhaps check cHandle
