@@ -1,5 +1,7 @@
 # CC2650 Sensortag Microphone
 
+<img src="images/BLE_Header.png" alt="ble" width="350"/>
+
 ## Importing Projects into CCS
 Please use the Code Compose Studio to import the template project:  
 1. Clone this project in a folder on your PC. 
@@ -43,8 +45,12 @@ Now:
 **Board LED -> Flashing green: Advertising (Press left button once)** 
 **Board LED -> Flashing green: Stop Advertising (Press left button again)** 
 
+If everything is done correctly, you should see:
+
+![stack](images/correct.JPG) 
+
 ## Getting the .wav files 
-Currently, upon collecting 200 samples (no specific reason, trial and error). The script will save the .wav files into a folder called samples. 
+Currently, upon collecting 600 frames which corresponds to roughly 0.06 second of wav file. The script will save the .wav files into a folder called samples. 
 
 ## Updates 
 21 Oct : the UART is printing in HEX values of sensor mic values. 
