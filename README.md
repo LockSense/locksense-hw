@@ -1,39 +1,55 @@
 # CC2650 Sensortag Microphone
 
-## Getting started 
+## Importing Projects into CCS
 Please use the Code Compose Studio to import the template project:  
 1. Clone this project in a folder on your PC. 
 2. Open Code Composer Studio > File > Import.  
 3. Select Code Compose Studio, then select CCS projects. Go to NEXT.  
-4. Click Browse and select the ccs folder from this repository. Then Click Finish.  
-5.  Click Project > Build All,  follow by Run > Debug 
-6.  Once Debug finish, remember to click Resume (to run the program)
+4. Click Browse to your git folder, and select BOTH the sensortag_audio_cc2650stk_app and the sensortag_audio_cc2650stk_stack folder. Then TICK BOTH project that appeared automatically in your window. 
 
-Next, launch the script in your git clone folder using this command:
-*python3 audio_frame_serial_print.py COM3 32 NONE -b 115200*
+## Build, Compiler & Run on SensorTag
+Follow these steps carefully. 
+1. On the left of CCS, double click on the **stack** project to make it your active project 
+![stack](images/CCS_1.JPG)
+2. Now Build this project as per how you normally do, (Project > Build Project). 
+3. Next, Run > Debug as > Code Composer Debug Session 
+4. Click on the green "Resume" Button (triangle play button) 
+5. Wait a while (5 second) then Click on red "Terminate" Button (stop button)
+6. On the left of CCS, double click on the **app** project to make it your active project 
+![app](images/CCS_2.JPG)
+7. Now Build this project as per how you normally do, (Project > Build Project). 
+8. Next, Run > Debug as > Code Composer Debug Session 
+9. Click on the green "Resume" Button (triangle play button) 
+10. But Do Not Terminate It.
 
-You should now see the following image:
 
-![waiting_data](images/waiting_data.jpg)
-
-Also, the sensor board led should now be RED. 
 ## Sending and Receiving data
+Before Launching the script, your sensortag needs to having a flashing green light, which indicates that it is advertising. Click on the button that is further away from your USB port ONCE to start advertising. Wait 2 sec, you should see the flashing green light. 
+
+Now, you can Launch the script in your git folder using this command:
+*python3 audio.py*
+
+Once Connected, the flashing green light will stop flashing, and Your script terminal will start printing "Waiting...". 
+
 To transmit, press the left button of of the board. (just try either of the button first to determine which is the START button). Once u press the "START" button, you will see the board led turn into flashing green.
 
+Previously:
 **Board LED -> RED : Stopped Recording (Press right button)**
-
 **Board LED -> Flashing green: Recording in progress (Press left button)** 
 
-Note: Before launching this step, ensure your CCS is in debug mode, and your script is already running.
-
-If everything went fine, you should be able to see the data coming in:
-
-![transmiting](images/with_data.png)
-
+Now: 
+**Board LED -> RED : Start Recording (Press & HOLD right usb button)**
+**Board LED -> RED : Stop Recording (Release right usb button)**
+**Board LED -> Flashing green: Advertising (Press left button once)** 
+**Board LED -> Flashing green: Stop Advertising (Press left button again)** 
 
 ## Getting the .wav files 
-Currently, upon collecting 1000 samples (no specific reason, trial and error). The script will create a folder called *samples*. Inside this folder you will find all the .wav files.
+Currently, upon collecting 200 samples (no specific reason, trial and error). The script will save the .wav files into a folder called samples. 
 
 ## Updates 
 21 Oct : the UART is printing in HEX values of sensor mic values. 
 Try not to mess with the *mic_test.c* unless necessary. Otherwise, any issues can contact me directly. 
+
+28 Oct : UART is now printing correctly, and able to transmit properly. Although there are still some losses, but basic architecture completed, enabling SW ML training. 
+
+10 Nov:  Bluetooth Capabilities enabled. 
