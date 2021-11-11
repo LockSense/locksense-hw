@@ -7,7 +7,11 @@ Please use the Code Compose Studio to import the template project:
 1. Clone this project in a folder on your PC. 
 2. Open Code Composer Studio > File > Import.  
 3. Select Code Compose Studio, then select CCS projects. Go to NEXT.  
-4. Click Browse to your git folder, and select BOTH the sensortag_audio_cc2650stk_app and the sensortag_audio_cc2650stk_stack folder. Then TICK BOTH project that appeared automatically in your window. 
+4. Click Browse to your git folder, and select the CCS folder. Tick BOTH the sensortag_audio_cc2650stk_app and the sensortag_audio_cc2650stk_stack project that appeared automatically in your window. 
+
+![stack](images/CCS_0.JPG) 
+
+The image shows a tiny red cross because i have already imported them already. You guys should not have the red cross. Otherwise, contact me to debug. 
 
 ## Build, Compiler & Run on SensorTag
 Follow these steps carefully. 
