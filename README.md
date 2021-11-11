@@ -40,16 +40,22 @@ Once Connected, the flashing green light will stop flashing, and Your script ter
 To transmit, press the left button of of the board. (just try either of the button first to determine which is the START button). Once u press the "START" button, you will see the board led turn into flashing green.
 
 Previously:
+
 **Board LED -> RED : Stopped Recording (Press right button)**
+
 **Board LED -> Flashing green: Recording in progress (Press left button)** 
 
 Now: 
+
 **Board LED -> RED : Start Recording (Press & HOLD right usb button)**
+
 **Board LED -> RED : Stop Recording (Release right usb button)**
+
 **Board LED -> Flashing green: Advertising (Press left button once)** 
+
 **Board LED -> Flashing green: Stop Advertising (Press left button again)** 
 
-If everything is done correctly, you should see:
+If everything is done correctly, you should see once you start pressing the USB button:
 
 ![stack](images/correct.JPG) 
 
