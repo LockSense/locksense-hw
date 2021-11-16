@@ -3,7 +3,9 @@ import struct
 import time
 import wave
 from struct import unpack,pack
+import battery as bt
 
+p = btle.Peripheral("54:6C:0E:52:F3:2B")
 
 tic1_stepsize_Lut = [
   7,    8,    9,   10,   11,   12,   13,   14, 16,   17,   19,   21,   23,   25,   28,   31,
@@ -24,6 +26,7 @@ framecount=0
 SI_Dec = 0
 PV_Dec = 0
 
+    
 def tic1_DecodeSingle(nibble):
     global SI_Dec
     global PV_Dec
@@ -95,50 +98,59 @@ inbuffer=bytearray()
 noti_count=0
 frame_count=0
 class MyDelegate(btle.DefaultDelegate):
-    def __init__(self):
-         btle.DefaultDelegate.__init__(self)
-         
-
-    def handleNotification(self, cHandle, data):
-        global inbuffer,noti_count,SI_Dec,PV_Dec,frame_count
-        #print("each data type is............",type(data))
-        inbuffer+=bytearray(data)
-        
-        if len(inbuffer)>=20:
-         if noti_count==0: #first notification
-          seqNum, SI_received, PV_received = struct.unpack('BBh', inbuffer[0:4])
-          seqNum = (seqNum >> 3)
-          print ("Frame sequence number: %d" % seqNum)
-          PV_Dec = PV_received
-          SI_Dec = SI_received
-          #print ("HDR_1 local: %d, HDR_1 received: %d" % (SI_Dec, SI_received))
-          #print ("HDR_2 local: %d, HDR_2 received: %d" % (PV_Dec, PV_received))
-          decode_adpcm(inbuffer[4:])
-          noti_count+=1
-         elif noti_count==4: #last notification
-          frame_count +=1
-          noti_count=0
-          inbuffer=bytearray()
-         else:
-          decode_adpcm(data)
-          noti_count+=1
-        if frame_count ==600: #600 frame count corresponds to ~0.06 second
-         save_wav()
-         frame_count=0
-        # ... perhaps check cHandle
-        # ... process 'data'
+ def __init__(self):
+  btle.DefaultDelegate.__init__(self)
 
 
-# Initialisation  -------
-p = btle.Peripheral("54:6C:0E:52:F3:2B")
+ def handleNotification(self, cHandle, data):
+  global inbuffer,noti_count,SI_Dec,PV_Dec,frame_count,p
+  #print("each data type is............",type(data))
+  inbuffer+=bytearray(data)
+  if cHandle==49:
+   if len(inbuffer)>=20:
+    if noti_count==0: #first notification
+     seqNum, SI_received, PV_received = struct.unpack('BBh', inbuffer[0:4])
+     seqNum = (seqNum >> 3)
+     print ("Frame sequence number: %d" % seqNum)
+     PV_Dec = PV_received
+     SI_Dec = SI_received
+     #print ("HDR_1 local: %d, HDR_1 received: %d" % (SI_Dec, SI_received))
+     #print ("HDR_2 local: %d, HDR_2 received: %d" % (PV_Dec, PV_received))
+     decode_adpcm(inbuffer[4:])
+     noti_count+=1
+    elif noti_count==4: #last notification
+     frame_count +=1
+     noti_count=0
+     inbuffer=bytearray()
+    else:
+     decode_adpcm(data)
+     noti_count+=1
+   if frame_count ==50: #600 frame count corresponds to 6 seconds of recording
+    frame_count=0
+    save_wav()
+    batt = bt.read_batt(p)
+    with open("log.txt","a") as f:
+     audio_recording_done = time.strftime("%H-%M-%S")
+     f.write("RECORDING DONE @ "+audio_recording_done+ " BATTERY LEVEL @ "+str(batt)+"\n")
+    
+  elif cHandle==30:
+    with open("log.txt","a") as f:
+     battery_level = time.strftime("%H-%M-%S")
+     f.write("Battery level @ "+battery_level+" "+str(int.from_bytes(data,"big"))+"\n")
+  else:
+    print("INCOMING HANDLE: ",cHandle)
+     
 p.setDelegate( MyDelegate() )
-
-# Setup to turn notifications on, e.g.
-#chs=srvs[2].getCharacteristics();
-#ch=chs[1];
 
 p.writeCharacteristic(int("0x002f",16),b"\x01\x00")
 p.writeCharacteristic(int("0x0032",16),b"\x01\x00")
+bt.listen_batt(p)
+
+def on_buzzer():
+    p.writeCharacteristic(int("0x002b",16),b"\x01")
+
+def off_buzzer():
+    p.writeCharacteristic(int("0x002b",16),b"\x00")
 
 # Main loop --------
 
