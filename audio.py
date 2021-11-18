@@ -1,12 +1,14 @@
 from bluepy import btle
 import struct
 import time
+import time 
 import wave
 from struct import unpack,pack
 import battery as bt
+import paho.mqtt.client as mqtt 
 
-p = btle.Peripheral("54:6C:0E:52:F3:2B")
 
+##---------------Global Variables---------------
 tic1_stepsize_Lut = [
   7,    8,    9,   10,   11,   12,   13,   14, 16,   17,   19,   21,   23,   25,   28,   31,
   34,   37,   41,   45,   50,   55,   60,   66, 73,   80,   88,   97,  107,  118,  130,  143,
@@ -25,8 +27,13 @@ buf = bytearray()
 framecount=0
 SI_Dec = 0
 PV_Dec = 0
+decoded = bytearray()
+byte_buf = ''
+inbuffer=bytearray()
+noti_count=0
+frame_count=0
+p=None 
 
-    
 def tic1_DecodeSingle(nibble):
     global SI_Dec
     global PV_Dec
@@ -61,8 +68,6 @@ def tic1_DecodeSingle(nibble):
 
     return PV_Dec;
 
-decoded = bytearray()
-byte_buf = ''
 def decode_adpcm(_buf):
     global decoded
     global buf
@@ -76,6 +81,8 @@ def decode_adpcm(_buf):
 
 def save_wav():
     global decoded
+    print("saving file.................")
+    client.publish("Audio/Sensor1/Data",decoded)
     bb = bytearray(decoded)
     filename = time.strftime("pdm_test_%Y-%m-%d_%H-%M-%S_adpcm")
 
@@ -87,16 +94,13 @@ def save_wav():
     w.writeframes(bb)
     w.close()
     print (".................DONE...")
-
     #clear stuff for next stream
     SI_Dec = 0
     PV_Dec = 0
-    decoded = []
+    Decoded=[]
     missedFrames = 0
-
-inbuffer=bytearray()
-noti_count=0
-frame_count=0
+    
+    
 class MyDelegate(btle.DefaultDelegate):
  def __init__(self):
   btle.DefaultDelegate.__init__(self)
@@ -125,7 +129,7 @@ class MyDelegate(btle.DefaultDelegate):
     else:
      decode_adpcm(data)
      noti_count+=1
-   if frame_count ==50: #600 frame count corresponds to 6 seconds of recording
+   if frame_count ==600: #600 frame count corresponds to 6 seconds of recording
     frame_count=0
     save_wav()
     batt = bt.read_batt(p)
@@ -139,25 +143,41 @@ class MyDelegate(btle.DefaultDelegate):
      f.write("Battery level @ "+battery_level+" "+str(int.from_bytes(data,"big"))+"\n")
   else:
     print("INCOMING HANDLE: ",cHandle)
-     
-p.setDelegate( MyDelegate() )
-
-p.writeCharacteristic(int("0x002f",16),b"\x01\x00")
-p.writeCharacteristic(int("0x0032",16),b"\x01\x00")
-bt.listen_batt(p)
-
+    
 def on_buzzer():
     p.writeCharacteristic(int("0x002b",16),b"\x01")
 
 def off_buzzer():
     p.writeCharacteristic(int("0x002b",16),b"\x00")
+    
+    
+    
+def connect_ble():
+ global p
+ print("Connecting to BLE Sensortag...")
+ p = btle.Peripheral("54:6C:0E:52:F3:2B")
+ print("Connected!")
+ p.setDelegate( MyDelegate() )
 
-# Main loop --------
-
-while True:
+ p.writeCharacteristic(int("0x002f",16),b"\x01\x00")
+ p.writeCharacteristic(int("0x0032",16),b"\x01\x00")
+ bt.listen_batt(p)
+ client.loop_start()
+ while True:
     if p.waitForNotifications(1.0):
         # handleNotification() was called
         continue
-
     print ("Waiting...")
-    # Perhaps do something else here
+ client.loop_end()
+
+def on_connect(client, userdata,flags,rc):
+    print("Connected to MQTT with result code: "+str(rc))
+    
+    client.publish("Audio/Sensor1/Start","Sensor 1 is connected to Audio Broker")
+    
+    
+
+client = mqtt.Client()
+client.on_connect = on_connect
+client.connect("localhost",1883,60)
+connect_ble()
