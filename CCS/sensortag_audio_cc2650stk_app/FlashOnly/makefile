@@ -52,19 +52,14 @@ ORDERED_OBJS += \
 "./Middleware/sensors/SensorUtil.obj" \
 "./Middleware/sensortag/SensorTagTest.obj" \
 "./PROFILES/audio_profile.obj" \
-"./PROFILES/barometerservice.obj" \
 "./PROFILES/battservice.obj" \
 "./PROFILES/ccservice.obj" \
 "./PROFILES/devinfoservice.obj" \
 "./PROFILES/gatt_uuid.obj" \
 "./PROFILES/gattservapp_util.obj" \
-"./PROFILES/humidityservice.obj" \
 "./PROFILES/ioservice.obj" \
-"./PROFILES/irtempservice.obj" \
-"./PROFILES/movementservice.obj" \
 "./PROFILES/oad.obj" \
 "./PROFILES/oad_target_external_flash.obj" \
-"./PROFILES/opticservice.obj" \
 "./PROFILES/peripheral.obj" \
 "./PROFILES/registerservice.obj" \
 "./PROFILES/simplekeys.obj" \
@@ -250,9 +245,9 @@ sensortag_audio_cc2650stk_app.hex: $(EXE_OUTPUTS)
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)
 	-$(RM) "Application\sensortag.obj" "Application\sensortag_audio.obj" "Application\sensortag_bar.obj" "Application\sensortag_batt.obj" "Application\sensortag_buzzer.obj" "Application\sensortag_conn_ctrl.obj" "Application\sensortag_factoryreset.obj" "Application\sensortag_hum.obj" "Application\sensortag_io.obj" "Application\sensortag_keys.obj" "Application\sensortag_mov.obj" "Application\sensortag_oad.obj" "Application\sensortag_opt.obj" "Application\sensortag_register.obj" "Application\sensortag_tmp.obj" "Application\util.obj" "Drivers\ECC\ECCROMCC26XX.obj" "Drivers\I2C\I2C.obj" "Drivers\I2C\I2CCC26XX.obj" "Drivers\PDM\PDMCC26XX.obj" "Drivers\PIN\PINCC26XX.obj" "Drivers\RF\RFCC26XX_singleMode.obj" "Drivers\SPI\SPI.obj" "Drivers\SPI\SPICC26XXDMA.obj" "Drivers\TRNG\TRNGCC26XX.obj" "Drivers\UDMA\UDMACC26XX.obj" "ICall\icall.obj" "ICall\icall_cc2650.obj" "ICallBLE\ble_user_config.obj" "ICallBLE\icall_api.obj" "Middleware\extflash\ExtFlash.obj" "Middleware\sensors\SensorBmp280.obj" "Middleware\sensors\SensorHdc1000.obj" 
-	-$(RM) "Middleware\sensors\SensorI2C.obj" "Middleware\sensors\SensorMpu9250.obj" "Middleware\sensors\SensorOpt3001.obj" "Middleware\sensors\SensorTmp007.obj" "Middleware\sensors\SensorUtil.obj" "Middleware\sensortag\SensorTagTest.obj" "PROFILES\audio_profile.obj" "PROFILES\barometerservice.obj" "PROFILES\battservice.obj" "PROFILES\ccservice.obj" "PROFILES\devinfoservice.obj" "PROFILES\gatt_uuid.obj" "PROFILES\gattservapp_util.obj" "PROFILES\humidityservice.obj" "PROFILES\ioservice.obj" "PROFILES\irtempservice.obj" "PROFILES\movementservice.obj" "PROFILES\oad.obj" "PROFILES\oad_target_external_flash.obj" "PROFILES\opticservice.obj" "PROFILES\peripheral.obj" "PROFILES\registerservice.obj" "PROFILES\simplekeys.obj" "PROFILES\st_util.obj" "Startup\board.obj" "Startup\main.obj" 
+	-$(RM) "Middleware\sensors\SensorI2C.obj" "Middleware\sensors\SensorMpu9250.obj" "Middleware\sensors\SensorOpt3001.obj" "Middleware\sensors\SensorTmp007.obj" "Middleware\sensors\SensorUtil.obj" "Middleware\sensortag\SensorTagTest.obj" "PROFILES\audio_profile.obj" "PROFILES\battservice.obj" "PROFILES\ccservice.obj" "PROFILES\devinfoservice.obj" "PROFILES\gatt_uuid.obj" "PROFILES\gattservapp_util.obj" "PROFILES\ioservice.obj" "PROFILES\oad.obj" "PROFILES\oad_target_external_flash.obj" "PROFILES\peripheral.obj" "PROFILES\registerservice.obj" "PROFILES\simplekeys.obj" "PROFILES\st_util.obj" "Startup\board.obj" "Startup\main.obj" 
 	-$(RM) "Application\sensortag.d" "Application\sensortag_audio.d" "Application\sensortag_bar.d" "Application\sensortag_batt.d" "Application\sensortag_buzzer.d" "Application\sensortag_conn_ctrl.d" "Application\sensortag_factoryreset.d" "Application\sensortag_hum.d" "Application\sensortag_io.d" "Application\sensortag_keys.d" "Application\sensortag_mov.d" "Application\sensortag_oad.d" "Application\sensortag_opt.d" "Application\sensortag_register.d" "Application\sensortag_tmp.d" "Application\util.d" "Drivers\ECC\ECCROMCC26XX.d" "Drivers\I2C\I2C.d" "Drivers\I2C\I2CCC26XX.d" "Drivers\PDM\PDMCC26XX.d" "Drivers\PIN\PINCC26XX.d" "Drivers\RF\RFCC26XX_singleMode.d" "Drivers\SPI\SPI.d" "Drivers\SPI\SPICC26XXDMA.d" "Drivers\TRNG\TRNGCC26XX.d" "Drivers\UDMA\UDMACC26XX.d" "ICall\icall.d" "ICall\icall_cc2650.d" "ICallBLE\ble_user_config.d" "ICallBLE\icall_api.d" "Middleware\extflash\ExtFlash.d" "Middleware\sensors\SensorBmp280.d" "Middleware\sensors\SensorHdc1000.d" "Middleware\sensors\SensorI2C.d" "Middleware\sensors\SensorMpu9250.d" 
-	-$(RM) "Middleware\sensors\SensorOpt3001.d" "Middleware\sensors\SensorTmp007.d" "Middleware\sensors\SensorUtil.d" "Middleware\sensortag\SensorTagTest.d" "PROFILES\audio_profile.d" "PROFILES\barometerservice.d" "PROFILES\battservice.d" "PROFILES\ccservice.d" "PROFILES\devinfoservice.d" "PROFILES\gatt_uuid.d" "PROFILES\gattservapp_util.d" "PROFILES\humidityservice.d" "PROFILES\ioservice.d" "PROFILES\irtempservice.d" "PROFILES\movementservice.d" "PROFILES\oad.d" "PROFILES\oad_target_external_flash.d" "PROFILES\opticservice.d" "PROFILES\peripheral.d" "PROFILES\registerservice.d" "PROFILES\simplekeys.d" "PROFILES\st_util.d" "Startup\board.d" "Startup\main.d" 
+	-$(RM) "Middleware\sensors\SensorOpt3001.d" "Middleware\sensors\SensorTmp007.d" "Middleware\sensors\SensorUtil.d" "Middleware\sensortag\SensorTagTest.d" "PROFILES\audio_profile.d" "PROFILES\battservice.d" "PROFILES\ccservice.d" "PROFILES\devinfoservice.d" "PROFILES\gatt_uuid.d" "PROFILES\gattservapp_util.d" "PROFILES\ioservice.d" "PROFILES\oad.d" "PROFILES\oad_target_external_flash.d" "PROFILES\peripheral.d" "PROFILES\registerservice.d" "PROFILES\simplekeys.d" "PROFILES\st_util.d" "Startup\board.d" "Startup\main.d" 
 	-$(RMDIR) $(GEN_MISC_DIRS__QUOTED)
 	-@echo 'Finished clean'
 	-@echo ' '

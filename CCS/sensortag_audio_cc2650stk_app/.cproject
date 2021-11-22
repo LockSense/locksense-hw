@@ -166,7 +166,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="Startup/ccfg_app_ble.c|TOOLS/cc26xx_app.cmd|TOOLS/cc26xx_ble_app_oad_image.icf|PROFILES/oad.h|ICall/ICallCC2650_patch.c|PROFILES/oad_target.h|cc26x0f128.cmd" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="PROFILES/movementservice.c|PROFILES/irtempservice.c|PROFILES/opticservice.c|PROFILES/humidityservice.c|PROFILES/barometerservice.c|Startup/ccfg_app_ble.c|TOOLS/cc26xx_app.cmd|TOOLS/cc26xx_ble_app_oad_image.icf|PROFILES/oad.h|ICall/ICallCC2650_patch.c|PROFILES/oad_target.h|cc26x0f128.cmd" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

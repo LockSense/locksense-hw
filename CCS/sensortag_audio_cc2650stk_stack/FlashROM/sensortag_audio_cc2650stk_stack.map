@@ -1,7 +1,7 @@
 ******************************************************************************
                   TI ARM Linker PC v5.2.9                      
 ******************************************************************************
->> Linked Mon Nov 08 15:12:02 2021
+>> Linked Tue Nov 16 16:41:26 2021
 
 OUTPUT FILE NAME:   <sensortag_audio_cc2650stk_stack.out>
 ENTRY POINT SYMBOL: "startup_entry"  address: 00011001
