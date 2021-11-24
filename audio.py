@@ -6,7 +6,7 @@ import wave
 from struct import unpack,pack
 import battery as bt
 import paho.mqtt.client as mqtt 
-
+import json
 
 ##---------------Global Variables---------------
 tic1_stepsize_Lut = [
@@ -38,7 +38,10 @@ def tic1_DecodeSingle(nibble):
     global SI_Dec
     global PV_Dec
     #print("length of my step size..........",len(tic1_stepsize_Lut))
-    step = tic1_stepsize_Lut[SI_Dec]
+    if SI_Dec <=89:
+     step = tic1_stepsize_Lut[SI_Dec]
+    else:
+     step=0
     cum_diff  = step>>3;
 
     SI_Dec += tic1_IndexLut[nibble];
@@ -82,9 +85,9 @@ def decode_adpcm(_buf):
 def save_wav():
     global decoded
     print("saving file.................")
+    filename = time.strftime("pdm_test_%Y-%m-%d_%H-%M-%S_adpcm")
     client.publish("Audio/Sensor1/Data",decoded)
     bb = bytearray(decoded)
-    filename = time.strftime("pdm_test_%Y-%m-%d_%H-%M-%S_adpcm")
 
     print ("...................saving file")
     w = wave.open("samples/"+filename + ".wav", "w")
@@ -97,7 +100,8 @@ def save_wav():
     #clear stuff for next stream
     SI_Dec = 0
     PV_Dec = 0
-    Decoded=[]
+    decoded=bytearray()
+    #bb=bytearray()
     missedFrames = 0
     
     
@@ -129,7 +133,8 @@ class MyDelegate(btle.DefaultDelegate):
     else:
      decode_adpcm(data)
      noti_count+=1
-   if frame_count ==600: #600 frame count corresponds to 6 seconds of recording
+   if frame_count ==108: #600 frame count corresponds to 6 seconds of recording
+    print(frame_count)
     frame_count=0
     save_wav()
     batt = bt.read_batt(p)
@@ -149,13 +154,13 @@ def on_buzzer():
 
 def off_buzzer():
     p.writeCharacteristic(int("0x002b",16),b"\x00")
-    
-    
+        
     
 def connect_ble():
  global p
  print("Connecting to BLE Sensortag...")
- p = btle.Peripheral("54:6C:0E:52:F3:2B")
+ #p = btle.Peripheral("54:6C:0E:52:F3:2B")
+ p = btle.Peripheral("F0:F8:F2:86:B9:85")
  print("Connected!")
  p.setDelegate( MyDelegate() )
 
@@ -164,20 +169,36 @@ def connect_ble():
  bt.listen_batt(p)
  client.loop_start()
  while True:
-    if p.waitForNotifications(1.0):
-        # handleNotification() was called
-        continue
-    print ("Waiting...")
+  if p.waitForNotifications(1.0):
+     # handleNotification() was called
+     continue
+  print ("Waiting...")
+  
  client.loop_end()
 
 def on_connect(client, userdata,flags,rc):
     print("Connected to MQTT with result code: "+str(rc))
-    
+    #client.subscribe("door1/verdict")
     client.publish("Audio/Sensor1/Start","Sensor 1 is connected to Audio Broker")
-    
-    
 
+def on_message(client,userdata,msg):
+    recv_dict = json.loads(msg.payload)
+    val = recv_dict["response"]
+    print("VERDICT VALUES === ",val)
+    if val == 0:
+        on_buzzer()
+        time.sleep(1)
+        off_buzzer()
+    else:
+        off_buzzer()
+    return
+    
 client = mqtt.Client()
 client.on_connect = on_connect
-client.connect("localhost",1883,60)
+client.on_message = on_message
+#client.connect("localhost",1883,60)
+client.username_pw_set("rabbits", "cutebunnies:)")
+client.tls_set()
+client.connect("locksense.dorcastan.com", 8883, 60)
 connect_ble()
+#client.loop_forever()
